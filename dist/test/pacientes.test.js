@@ -1,0 +1,71 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const server_1 = __importDefault(require("../server/server"));
+require('./../db/mongoose.connection');
+const supertest_1 = __importDefault(require("supertest"));
+const chai_1 = require("chai");
+const ENDPOINT = '/api/pacientes/';
+const novo = {
+    cpf: '99911199955',
+    nome: 'PACIENTE-TESTE',
+    nascimento: '1999-01-01',
+    endereco: 'Rua das Acácias',
+    telefone: '984498984',
+    email: 'none@moment.ok'
+};
+describe('Seção: Pacientes', function () {
+    let request;
+    before(function () {
+        request = supertest_1.default.agent(server_1.default.getApp());
+    });
+    after(function (done) {
+        server_1.default.pararServidor();
+        done();
+    });
+    it('deveria permitir adicionar novo paciente', async function () {
+        const res = await request.post(ENDPOINT).send(novo);
+        (0, chai_1.expect)(res.status).to.equal(201);
+        (0, chai_1.expect)(res.body).not.to.be.empty;
+        (0, chai_1.expect)(res.body).to.be.an('object');
+    });
+    it('deveria permitir obter um GET em /api/pacientes/ e ter um ou mais registros', async function () {
+        const res = await request.get(ENDPOINT);
+        (0, chai_1.expect)(res.status).to.equal(200);
+        (0, chai_1.expect)(res.body).not.to.be.empty;
+        const data = res.body;
+        (0, chai_1.expect)(data.results).to.be.greaterThan(0);
+    });
+    it('deveria retornar o registro do paciente recém-criado', async function () {
+        const res = await request.get(`${ENDPOINT}${novo.cpf}`);
+        (0, chai_1.expect)(res.status).to.equal(200);
+        (0, chai_1.expect)(res.body).not.to.be.empty;
+        (0, chai_1.expect)(res.body).to.be.an('object');
+        const data = res.body.data;
+        (0, chai_1.expect)(data.nome).to.be.equal(novo.nome);
+    });
+    it('não deveria permitir adicionar um novo paciete com um número repetido de CPF', async function () {
+        const res = await request.post(ENDPOINT).send(novo);
+        (0, chai_1.expect)(res.status).to.equal(400);
+    });
+    it('deveria retornar um erro caso façamos uma busca por um CPF não cadastrado', async function () {
+        const res = await request.get(`${ENDPOINT}2398`);
+        (0, chai_1.expect)(res.status).to.equal(404);
+    });
+    it('deveria permitir alterar alguns dados do paciente recém-criado', async function () {
+        const res = await request.patch(`${ENDPOINT}${novo.cpf}`).send({
+            nome: 'SARADO'
+        });
+        (0, chai_1.expect)(res.status).to.equal(200);
+        (0, chai_1.expect)(res.body).not.to.be.empty;
+        const data = res.body.data;
+        (0, chai_1.expect)(data.nome).not.be.equal(novo.nome);
+    });
+    it('deveria permitir apagar paciente recém-criado', async function () {
+        const res = await request.delete(`${ENDPOINT}${novo.cpf}`);
+        (0, chai_1.expect)(res.status).to.equal(204);
+    });
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGFjaWVudGVzLnRlc3QuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi90ZXN0L3BhY2llbnRlcy50ZXN0LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7O0FBQUEsOERBQXFDO0FBQ3JDLE9BQU8sQ0FBQyw2QkFBNkIsQ0FBQyxDQUFBO0FBQ3RDLDBEQUFpQztBQUNqQywrQkFBNkI7QUFFN0IsTUFBTSxRQUFRLEdBQUcsaUJBQWlCLENBQUE7QUFFbEMsTUFBTSxJQUFJLEdBQUc7SUFDWCxHQUFHLEVBQUUsYUFBYTtJQUNsQixJQUFJLEVBQUUsZ0JBQWdCO0lBQ3RCLFVBQVUsRUFBRSxZQUFZO0lBQ3hCLFFBQVEsRUFBRSxpQkFBaUI7SUFDM0IsUUFBUSxFQUFFLFdBQVc7SUFDckIsS0FBSyxFQUFFLGdCQUFnQjtDQUN4QixDQUFBO0FBRUQsUUFBUSxDQUFDLGtCQUFrQixFQUFFO0lBQzNCLElBQUksT0FBaUMsQ0FBQTtJQUNyQyxNQUFNLENBQUM7UUFDTCxPQUFPLEdBQUcsbUJBQVMsQ0FBQyxLQUFLLENBQUMsZ0JBQU0sQ0FBQyxNQUFNLEVBQUUsQ0FBQyxDQUFBO0lBQzVDLENBQUMsQ0FBQyxDQUFBO0lBRUYsS0FBSyxDQUFDLFVBQVUsSUFBSTtRQUNsQixnQkFBTSxDQUFDLGFBQWEsRUFBRSxDQUFBO1FBQ3RCLElBQUksRUFBRSxDQUFBO0lBQ1IsQ0FBQyxDQUFDLENBQUE7SUFHRixFQUFFLENBQUMsMENBQTBDLEVBQUUsS0FBSztRQUNsRCxNQUFNLEdBQUcsR0FBRyxNQUFNLE9BQU8sQ0FBQyxJQUFJLENBQUMsUUFBUSxDQUFDLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFBO1FBRW5ELElBQUEsYUFBTSxFQUFDLEdBQUcsQ0FBQyxNQUFNLENBQUMsQ0FBQyxFQUFFLENBQUMsS0FBSyxDQUFDLEdBQUcsQ0FBQyxDQUFBO1FBQ2hDLElBQUEsYUFBTSxFQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsQ0FBQyxHQUFHLENBQUMs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
