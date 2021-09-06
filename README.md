@@ -1,7 +1,7 @@
 # Desafio Técnico - DASA
 ## Relatório
 
-### Projeto iniciado em 04/09/2021 
+### Projeto iniciado em **04/09/2021**
 ### Desenvolvido por Eduardo Stuart | https://eduardostuart.pro.br
 
 ---
@@ -38,7 +38,7 @@ Para testar o projeto, será preciso ter os seguintes componentes instalados:
   - Um guia detalhado de como instalar/atualizar o Node pode ser encontrado no [site oficial](https://nodejs.org/)
 - **Docker**
   - A versão usada foi a **20.10.8**, mas deve funcionar em versões anteriores
-  - Se ainda não tiver o Docker em sua máquina, [visite o site oficial](https://www.docker.com/get-started) para obter maiores instruções sobre como instalar
+  - Se ainda não tiver o Docker em sua máquina, [visite o site oficial](https://www.docker.com/get-started) para obter mais informações sobre como instalar essa fantástica ferramenta
 - **Docker-Compose**
   - A versão usada foi a **1.29.2**, mas deve funcionar em versões anteriores
   - Detalhes sobre instalação dessa ferramenta podem ser encontrados nessa seção do [site oficial](https://docs.docker.com/compose/install/)
@@ -57,8 +57,8 @@ Para clonar o repositório contendo os arquivos desse projeto, siga os seguintes
 cd ~
 mkdir dasa && cd dasa
 # Clone o repositório que está abrigando os arquivos desse projeto
-# Observe que a linha termina com um ponto após o nome do repositório
-git clone git@github.com:eduardo-stuart/DASA.git .
+# Observe que a linha termina com um ponto após o nome do repositório e um espaço
+git clone git://github.com/eduardo-stuart/DASA.git .
 # Para uma maior comodidade, o banco de dados MongoDB, necessário para a execução do projeto, 
 # irá rodar via um container no Docker. Digite o seguinte comando para iniciar a sua operação
 sudo docker-compose up -d
@@ -68,9 +68,18 @@ sudo npm install
 npm start
 ```
 
+É possível iniciar o projeto de diversas formas:
+
+- **npm start**: modo padrão, não exibe muitas notificações no terminal
+- **npm run debug**: ativa o modo de depuração; grande parte das transições vão ser logadas para o terminal
+- **npm run build**: faz a conversão dos arquivos de **Typescript** para **JavaScript**; os arquivos resultantes ficam reunidos na pasta **./dist**
+- **npm run test**: realiza a bateria de 20 testes unitários
+
+---
+
 ### Testando
 
-Com o projeto em execução, abra o seu navegador e visite o endereço [localhost:3000](localhost:3000). Você será apresentado à documentação da API, onde estão listados os **_endpoints_**, como usá-los, os tipos de dados que eles trabalham, etc.
+Com o projeto em execução, abra o seu navegador e visite o endereço [http://localhost:3000](http://localhost:3000). Você será apresentado à documentação da API, onde estão listados os **_endpoints_**, como usá-los, os tipos de dados que eles trabalham, etc.
 
 ![Representação da Interface Pública da API](./imgs/captura.jpeg)
 
@@ -83,31 +92,36 @@ Além disso, é possível interagir com a API diretamente nessas paǵinas, acres
 
 O projeto foi desenvolvido usando as seguintes tecnologias:
 
-* Linguagem: Typescript (v4.4.2)
-* Ambimente: Node.js (v16.8.0)
+* Linguagem: **Typescript** (v4.4.2)
+* Ambimente: **Node.js** (v16.8.0)
 * Frameworks: 
-    - Express.js (v4.17.1)
-    - Mongoose (v6.0.4)
-    - Mocha (v9.1.1)
-* Banco de dados: MongoDB
-* Documentação: Swagger-jsdoc (v6.1.0)
+    - **Express.js** (v4.17.1)
+    - **Mongoose** (v6.0.4)
+    - **Mocha** (v9.1.1)
+* Banco de dados: **MongoDB**
+* Documentação: **Swagger-jsdoc** (v6.1.0)
 
 ---
 <a name="tecnicas"></a>
 
 ## Técnicas Usadas
 
-O projeto adotou as principais boas práticas de desenvolvimento de software:
+O projeto adotou as principais boas práticas de desenvolvimento de software.
 
 - Programação Orientada a Objetos
   - Herança
   - Polimorfismo
   - Encapsulamento
 - Padrões de Projeto
+  - MVC (*Model-View-Controller*)
   - Singleton
   - Middleware
   - SOLID
   - DRY
+  - etc...
+
+O código-fonte está fartamente comentado e sua estrutura é de fácil compreensão.
+
 ---
 
 <a name="testando"></a>
